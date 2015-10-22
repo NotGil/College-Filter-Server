@@ -1,0 +1,16 @@
+{
+  "name": "CollegeFilter",
+  "version": "0.0.0",
+  "description": "CollegeFilter",
+  "main": "app.js",
+  "author": {
+    "name": "Gilberto",
+    "email": ""
+  },
+  "dependencies": {
+    "express": "3.4.4",
+    "jade": "*",
+    "mongodb": "^2.0.39",
+    "stylus": "*"
+  }
+}
