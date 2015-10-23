@@ -1,12 +1,11 @@
 {
 	"version": "0.1.0",
 	// List of configurations. Add new configurations or edit existing ones.
-	// ONLY "node" and "mono" are supported, change "type" to switch.
 	"configurations": [
 		{
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Launch app.js",
-			// Type of configuration. Possible values: "node", "mono".
+			// Type of configuration.
 			"type": "node",
 			// Workspace relative or absolute path to the program.
 			"program": "app.js",
@@ -21,7 +20,9 @@
 			// Optional arguments passed to the runtime executable.
 			"runtimeArgs": ["--nolazy"],
 			// Environment variables passed to the program.
-			"env": { },
+			"env": {
+				"NODE_ENV": "development"
+			},
 			// Use JavaScript source maps (if they exist).
 			"sourceMaps": false,
 			// If JavaScript source maps are enabled, the generated code is expected in this directory.
