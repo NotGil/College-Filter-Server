@@ -31,10 +31,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-//app.get('/distinct', university.distinct);
-//app.post('/api/filter', university.filter);
-//app.post('/api/test', university.test);
-//app.get('/api/University/:webAddress', university.getUni);
+app.get('/distinct', university.distinct);
+app.post('/api/filter', university.filter);
+app.post('/api/test', university.test);
+app.get('/api/University/:webAddress', university.getUni);
 
 
 http.createServer(app).listen(app.get('port'), function () {
