@@ -37,7 +37,7 @@ exports.distinct = function (req, res){
             console.log("We are connected");
         }
         var collection = db.collection('Universities');
-        collection.distinct('Religious-affiliation', function (err, docs){
+        collection.distinct('geographicRegion', function (err, docs){
             res.send(docs);
         })
     
@@ -80,21 +80,26 @@ exports.filter = function (req, res){
                             //console.log(doc.webAddress.home);
                         }
                     });
-                    res.json(list);
+                    res.send(list);
                 });
             }
             if(criteria=="region"){
                 var list = new Array();
                 collection.find({
-                    "geographicRegion": userData
+                    "geographicRegion": {"$ne":userData} 
                 }).toArray(function (err, docs) {
                     console.log("Printing docs from Array")
                     docs.forEach(function (doc) {
                         //console.log("Doc from Array ");
-                        if (doc.percentAdmitted.total != null) {
+                        try {
+                            if (doc.percentAdmitted.total != null) {
                             list.push(doc.webAddress.home);
                             //console.log(doc.webAddress.home);
                         }
+                        } catch (error) {
+                            //do nothing
+                        }
+                        
                     });
                     res.send(list);
                 });
@@ -102,15 +107,20 @@ exports.filter = function (req, res){
             if(criteria=="religion"){
                 var list = new Array();
                 collection.find({
-                    "Religious-affiliation": userData
+                    "Religious-affiliation": {"$ne":userData} 
                 }).toArray(function (err, docs) {
                     console.log("Printing docs from Array")
                     docs.forEach(function (doc) {
                         //console.log("Doc from Array ");
-                        if (doc.percentAdmitted.total != null) {
+                        try {
+                            if (doc.percentAdmitted.total != null) {
                             list.push(doc.webAddress.home);
                             //console.log(doc.webAddress.home);
                         }
+                        } catch (error) {
+                            //do nothing
+                        }
+                        
                     });
                     res.send(list);
                 });
@@ -124,23 +134,5 @@ exports.filter = function (req, res){
 }
 
 exports.test = function (req, res){
-    var criteria = new Array(req.body.first, req.body.second, req.body.third);
-    //var userData = new Array(req.query[criteria[0]], req.query[criteria[1]], req.query[criteria[2]]);
-    var userData = new Array();
-    
-    var i;
-    for (i = 0; i < 3; i++) {
-        if (criteria[i] == "admission") {
-            console.log(req.body.admission);
-            userData.push(req.body.admission);
-        }
-        //*example* will probably not work when you actually use it 
-        if (criteria[i] == "SATScores") {
-            userData.push(req.body.SATScores);
-        }
-        if (criteria[i] == "region") {
-            userData.push(req.body.region);
-        }
-    }
-    res.send(req.body);
+    res.send("connected");
 }
