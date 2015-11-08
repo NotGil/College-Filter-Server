@@ -2,8 +2,11 @@
 var MongoClient = require('mongodb').MongoClient;
 
 exports.getUni = function (req, res){
-
+    
     var address = req.params.webAddress;
+    if(address=="firstContact"){
+        res.json(null);
+    }
     // Connect to the db
     MongoClient.connect("mongodb://dbuser:dbpassword@ds059702.mongolab.com:59702/university_database", function (err, db) {
         if (!err) {
@@ -48,48 +51,74 @@ exports.filter = function (req, res){
         var collection = db.collection('Universities');
         
         console.log("filter function is running");
-        var criteria = new Array(req.body.first, req.body.second, req.body.third);
-        var userData = new Array();
-        for (var i = 0; i < 3; i++) {
-            if (criteria[i] == "admission") {
-                console.log(req.body.admission);
-                userData.push(req.body.admission);
-            }
-            if (criteria[i] == "SATScores") {
-                userData.push(req.body.SATScores);
-            }
-            if (criteria[i] == "region") {
-                userData.push(req.body.region);
-            }
+        var criteria = req.body.first;
+        var userData;
+        if (criteria == "admission") {
+            userData=(req.body.admission);
+        }
+        if (criteria == "region") {
+            userData=(req.body.region);
+        }
+        if (criteria == "religion") {
+            userData=(req.body.religion);
         }
         
-        
-        for (i = 0; i < 3; i++) {
-            
-            if (criteria[i] !="null") {
-                console.log(criteria[i] + " " + userData[i]);
-                if (criteria[i] == "admission") {
-                    var list = new Array();
-                    collection.find({
-                        "percentAdmitted.total": {
-                            "$gte": Number(userData[i])
+        if (criteria !="null") {
+            console.log(criteria + " " + userData);
+            if (criteria== "admission") {
+                var list = new Array();
+                collection.find({
+                    "percentAdmitted.total": {
+                        "$gte": Number(userData)
+                    }
+                }).toArray(function (err, docs) {
+                    console.log("Printing docs from Array")
+                    docs.forEach(function (doc) {
+                        //console.log("Doc from Array ");
+                        if (doc.percentAdmitted.total != null) {
+                            list.push(doc.webAddress.home);
+                            //console.log(doc.webAddress.home);
                         }
-                    }).toArray(function (err, docs) {
-                        console.log("Printing docs from Array")
-                        docs.forEach(function (doc) {
-                            //console.log("Doc from Array ");
-                            if (doc.percentAdmitted.total != null) {
-                                list.push(doc.webAddress.home);
-                                console.log(doc.webAddress.home);
-                            }
-                        });
-                        res.send(list);
                     });
-                }
-
+                    res.json(list);
+                });
             }
-            
+            if(criteria=="region"){
+                var list = new Array();
+                collection.find({
+                    "geographicRegion": userData
+                }).toArray(function (err, docs) {
+                    console.log("Printing docs from Array")
+                    docs.forEach(function (doc) {
+                        //console.log("Doc from Array ");
+                        if (doc.percentAdmitted.total != null) {
+                            list.push(doc.webAddress.home);
+                            //console.log(doc.webAddress.home);
+                        }
+                    });
+                    res.send(list);
+                });
+            }
+            if(criteria=="religion"){
+                var list = new Array();
+                collection.find({
+                    "Religious-affiliation": userData
+                }).toArray(function (err, docs) {
+                    console.log("Printing docs from Array")
+                    docs.forEach(function (doc) {
+                        //console.log("Doc from Array ");
+                        if (doc.percentAdmitted.total != null) {
+                            list.push(doc.webAddress.home);
+                            //console.log(doc.webAddress.home);
+                        }
+                    });
+                    res.send(list);
+                });
+            }
+
         }
+            
+        
     });
 
 }
