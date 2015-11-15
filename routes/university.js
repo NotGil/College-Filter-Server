@@ -27,6 +27,7 @@ exports.getUni = function (req, res){
                     res.json(doc);
                 }
             });
+            res.send(null);
         });
     
     });
@@ -75,12 +76,12 @@ exports.filter = function (req, res){
                     console.log("Printing docs from Array")
                     docs.forEach(function (doc) {
                         //console.log("Doc from Array ");
-                        if (doc.percentAdmitted.total != null) {
+                        if (doc.percentAdmitted.total != null&&list.indexOf(doc.webAddress.home)==-1) {
                             list.push(doc.webAddress.home);
                             //console.log(doc.webAddress.home);
                         }
                     });
-                    res.send(list);
+                    res.send(list.sort());
                 });
             }
             if(criteria=="region"){
@@ -92,7 +93,7 @@ exports.filter = function (req, res){
                     docs.forEach(function (doc) {
                         //console.log("Doc from Array ");
                         try {
-                            if (doc.percentAdmitted.total != null) {
+                            if (doc.percentAdmitted.total != null&&list.indexOf(doc.webAddress.home)==-1) {
                             list.push(doc.webAddress.home);
                             //console.log(doc.webAddress.home);
                         }
@@ -101,7 +102,7 @@ exports.filter = function (req, res){
                         }
                         
                     });
-                    res.send(list);
+                    res.send(list.sort());
                 });
             }
             if(criteria=="religion"){
@@ -113,7 +114,7 @@ exports.filter = function (req, res){
                     docs.forEach(function (doc) {
                         //console.log("Doc from Array ");
                         try {
-                            if (doc.percentAdmitted.total != null) {
+                            if (doc.percentAdmitted.total != null&&list.indexOf(doc.webAddress.home)==-1) {
                             list.push(doc.webAddress.home);
                             //console.log(doc.webAddress.home);
                         }
@@ -122,7 +123,7 @@ exports.filter = function (req, res){
                         }
                         
                     });
-                    res.send(list);
+                    res.send(list.sort());
                 });
             }
 
